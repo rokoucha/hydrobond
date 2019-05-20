@@ -1,0 +1,42 @@
+{
+  "name": "hydrobond",
+  "version": "0.0.1",
+  "description": "Useful Sea wrapper for JavaScript, written in TypeScript",
+  "main": "dist/index.js",
+  "repository": "ssh://git@github.com/atnanasi/hydrobond.git",
+  "author": "Atnanasi <ys2000pro@gmail.com>",
+  "license": "Apache-2.0",
+  "scripts": {
+    "lint": "eslint src/** --ext .ts,.tsx",
+    "lint:fix": "yarn lint --fix",
+    "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
+    "dev": "ts-node src/index.ts",
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "build": "npm-run-all clean tsc"
+  },
+  "devDependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/form-data": "^2.2.1",
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.2",
+    "@types/ws": "^6.0.1",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "jest": "^24.8.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^1.17.1",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cafy": "^15.1.1",
+    "form-data": "^2.3.3",
+    "ws": "^7.0.0"
+  }
+}
