@@ -413,7 +413,7 @@ export default class Hydrobond {
    * @returns {URL}
    */
   public getAuthorizeUrl(): URL {
-    if (this.auth.clientId === '') throw Error('clientId is not set')
+    if (this.auth.clientId === '') throw Error('clientId is empty')
 
     return new URL(
       `/authorize?client_id=${this.auth.clientId}&response_type=code&state=${
@@ -431,22 +431,23 @@ export default class Hydrobond {
    * @returns {Promise<string>} access_token
    */
   public async authorize(authCode: string): Promise<string> {
-    if (this.auth.clientId === '') throw Error('clientId is not set')
-    if (this.auth.clientSecret === '') throw Error('clientSecret is not set')
+    if (this.auth.clientId === '') throw Error('clientId is empty')
+    if (this.auth.clientSecret === '') throw Error('clientSecret is empty')
 
-    const res = await this.axios.post<Token>(
-      `/token?client_id=${this.auth.clientId}&response_type=code&state=${
+    const res = await this.axios({
+      method: 'post',
+      url: `/token?client_id=${this.auth.clientId}&response_type=code&state=${
         this.auth.stateText
       }`,
-      {
-        baseURL: this.oauthEndpoint.href,
+      baseURL: this.oauthEndpoint.href,
+      data: {
         client_id: this.auth.clientId,
         client_secret: this.auth.clientSecret,
         code: authCode,
         grant_type: 'authorization_code',
         state: this.auth.stateText
       }
-    )
+    })
 
     const token = new Token(res.data)
 
@@ -508,7 +509,7 @@ export default class Hydrobond {
    *
    * @returns {Promise<User>}
    */
-  public async postUserSettings(setting: UserSettings): Promise<User> {
+  public async updateAccount(setting: UserSettings): Promise<User> {
     const res = await this.axios.patch<User>(`/v1/account`, setting)
 
     return new User(res.data)

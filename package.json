@@ -7,13 +7,14 @@
   "author": "Atnanasi <ys2000pro@gmail.com>",
   "license": "Apache-2.0",
   "scripts": {
-    "lint": "eslint src/** --ext .ts,.tsx",
-    "lint:fix": "yarn lint --fix",
-    "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
-    "dev": "ts-node src/index.ts",
+    "build": "npm-run-all clean tsc",
     "clean": "rimraf dist/*",
-    "tsc": "tsc",
-    "build": "npm-run-all clean tsc"
+    "dev": "ts-node src/index.ts",
+    "format": "prettier --write \"./src/**/*.{ts,tsx}\"",
+    "lint:fix": "yarn lint --fix",
+    "lint": "eslint src/** --ext .ts,.tsx",
+    "test": "jest",
+    "tsc": "tsc"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
@@ -23,6 +24,7 @@
     "@types/ws": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
     "@typescript-eslint/parser": "^1.9.0",
+    "axios-mock-adapter": "^1.16.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-prettier": "^3.1.0",
