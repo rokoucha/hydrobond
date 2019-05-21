@@ -1,6 +1,10 @@
 {
   "author": "Atnanasi <ys2000pro@gmail.com>",
   "description": "Useful Sea wrapper for JavaScript, written in TypeScript",
+  "files": [
+    "dist",
+    "!**/__test__/**"
+  ],
   "license": "Apache-2.0",
   "main": "dist/hydrobond.js",
   "name": "hydrobond",
@@ -12,7 +16,7 @@
     "lint": "eslint src/** --ext .ts",
     "prettier:format": "prettier --write \"./src/**/*.ts\"",
     "prettier": "prettier --check \"./src/**/*.ts\"",
-    "test:ci": "jest --ci --reporters=default --reporters=jest-junit",
+    "test:ci": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html",
     "test": "jest --reporters=default",
     "tsc": "tsc"
   },

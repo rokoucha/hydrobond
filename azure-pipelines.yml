@@ -34,5 +34,11 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/junit.xml'
-    condition: always()
-    displayName: 'Publish test results **/junit.xml'
+    displayName: 'Publish test results'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'cobertura'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
+      displayName: 'Publish coverage results'
