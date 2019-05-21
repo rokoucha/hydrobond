@@ -62,3 +62,6 @@ typings/
 
 # build output
 /dist
+
+# junit output
+junit.xml

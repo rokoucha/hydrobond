@@ -9,5 +9,6 @@
 .prettierrc
 azure-pipelines.yml
 jest.config.json
+junit.xml
 tsconfig.json
 tslint.json

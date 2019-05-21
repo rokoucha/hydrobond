@@ -30,3 +30,9 @@ steps:
   - script: |
       yarn test
     displayName: 'Check with tests'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/junit.xml'
+    condition: always()
+    displayName: 'Publish test results **/junit.xml'
