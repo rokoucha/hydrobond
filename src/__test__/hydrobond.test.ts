@@ -1,14 +1,12 @@
 import Hydrobond, {
+  Application,
+  Authorization,
   File,
   PostBody,
-  UserSettings,
-  Application,
-  Authorization
+  UserSettings
 } from '../hydrobond'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-
-const mock = new MockAdapter(axios)
 
 describe('Application', (): void => {
   it('valid instance', (): void => {
@@ -47,6 +45,7 @@ describe('Authorization', (): void => {
 })
 
 describe('Hydrobond', (): void => {
+  const mock = new MockAdapter(axios)
   const hydrobond = new Hydrobond(
     new URL('https://example.com/api'),
     new URL('https://example.com/oauth'),
