@@ -16,9 +16,11 @@ const hydrobond = new Hydrobond(
   }
 )
 
-describe('Hydrobond', () => {
-  describe('authorize', () => {
-    it('throw error because of clientId is not set', async () => {
+describe('Hydrobond', (): void => {
+  describe('authorize', (): void => {
+    it('throw error because of clientId is not set', async (): Promise<
+      void
+    > => {
       const hydrobond = new Hydrobond(
         new URL('https://example.com/api'),
         new URL('https://example.com/oauth'),
@@ -37,7 +39,9 @@ describe('Hydrobond', () => {
       }
     })
 
-    it('throw error because of clientSecret is not set', async () => {
+    it('throw error because of clientSecret is not set', async (): Promise<
+      void
+    > => {
       const hydrobond = new Hydrobond(
         new URL('https://example.com/api'),
         new URL('https://example.com/oauth'),
@@ -56,21 +60,27 @@ describe('Hydrobond', () => {
       }
     })
 
-    it('success authroize application and return valid access token', async () => {
+    it('success authroize application and return valid access token', async (): Promise<
+      void
+    > => {
       mock
         .onPost(
           'https://example.com/oauth/token?client_id=client_id&response_type=code&state=state',
           {
+            /* eslint-disable @typescript-eslint/camelcase*/
             client_id: 'client_id',
             client_secret: 'client_secret',
             code: 'auth_code',
             grant_type: 'authorization_code',
             state: 'state'
+            /* eslint-enable @typescript-eslint/camelcase*/
           }
         )
         .reply(200, {
+          /* eslint-disable @typescript-eslint/camelcase*/
           access_token: 'access_token',
           token_type: 'Bearer'
+          /* eslint-enable @typescript-eslint/camelcase*/
         })
 
       const res = await hydrobond.authorize('auth_code')
@@ -79,8 +89,8 @@ describe('Hydrobond', () => {
     })
   })
 
-  describe('post', () => {
-    it('success post text', async () => {
+  describe('post', (): void => {
+    it('success post text', async (): Promise<void> => {
       const postBody = new PostBody({
         text: 'text'
       })
@@ -116,7 +126,7 @@ describe('Hydrobond', () => {
       expect(res.text).toBe('text')
     })
 
-    it('success post with attachments', async () => {
+    it('success post with attachments', async (): Promise<void> => {
       const postBody = new PostBody({
         text: 'text',
         fileIds: [1, 2, 3]
@@ -204,8 +214,8 @@ describe('Hydrobond', () => {
     })
   })
 
-  describe('getTimeline', () => {
-    it('success get timeline', async () => {
+  describe('getTimeline', (): void => {
+    it('success get timeline', async (): Promise<void> => {
       const postResponse = [
         {
           id: 1,
@@ -243,21 +253,25 @@ describe('Hydrobond', () => {
       expect(res[0].id).toBe(1)
     })
 
-    it('throw error because of count is greater than 100', async () => {
+    it('throw error because of count is greater than 100', async (): Promise<
+      void
+    > => {
       await expect(hydrobond.getTimeline(10000)).rejects.toThrowError(
         'count must be less than or equal to 100'
       )
     })
 
-    it('throw error because of count is less than 1', async () => {
+    it('throw error because of count is less than 1', async (): Promise<
+      void
+    > => {
       await expect(hydrobond.getTimeline(0)).rejects.toThrowError(
         'count must be greater than or equal to 1'
       )
     })
   })
 
-  describe('updateAccount', () => {
-    it('success update name and avatar', async () => {
+  describe('updateAccount', (): void => {
+    it('success update name and avatar', async (): Promise<void> => {
       const userSettings = new UserSettings({
         name: 'New name',
         avatarFileId: 1
@@ -298,7 +312,7 @@ describe('Hydrobond', () => {
       expect(res.name).toBe('New name')
     })
 
-    it('success update only name', async () => {
+    it('success update only name', async (): Promise<void> => {
       const userSettings = new UserSettings({
         name: 'New name'
       })
@@ -323,7 +337,7 @@ describe('Hydrobond', () => {
       expect(res.name).toBe('New name')
     })
 
-    it('success update only avatar', async () => {
+    it('success update only avatar', async (): Promise<void> => {
       const userSettings = new UserSettings({
         avatarFileId: 1
       })
@@ -362,7 +376,7 @@ describe('Hydrobond', () => {
       expect(res.name).toBe('Old name')
     })
 
-    it('do not update anything', async () => {
+    it('do not update anything', async (): Promise<void> => {
       const userSettings = new UserSettings({})
       const userResponse = {
         id: 1,
