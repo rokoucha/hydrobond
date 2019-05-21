@@ -74,7 +74,7 @@ export class Authorization {
   public clientId: string
   public clientSecret: string
   public stateText: string
-  public tokenType: string
+  public tokenType: string = 'Bearer'
 
   /**
    * Validate
@@ -88,14 +88,12 @@ export class Authorization {
     clientId: string | undefined
     clientSecret: string | undefined
     stateText: string | undefined
-    tokenType: string | undefined
   } {
     return $.obj({
       accessToken: $.optional.str,
       clientId: $.optional.str,
       clientSecret: $.optional.str,
-      stateText: $.optional.str,
-      tokenType: $.optional.str
+      stateText: $.optional.str
     }).throw(authorization)
   }
 
@@ -121,7 +119,6 @@ export class Authorization {
     this.clientId = authorization.clientId || ''
     this.clientSecret = authorization.clientSecret || ''
     this.stateText = authorization.stateText || this.getStateText()
-    this.tokenType = authorization.tokenType || 'Bearer'
   }
 }
 

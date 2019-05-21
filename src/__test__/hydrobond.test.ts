@@ -2,7 +2,8 @@ import Hydrobond, {
   File,
   PostBody,
   UserSettings,
-  Application
+  Application,
+  Authorization
 } from '../hydrobond'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
@@ -15,6 +16,33 @@ describe('Application', (): void => {
 
     expect(application.id).toBe(1)
     expect(application.name).toBe('name')
+  })
+})
+
+describe('Authorization', (): void => {
+  it('valid instance', (): void => {
+    const authorization = new Authorization({
+      accessToken: 'accessToken',
+      clientId: 'clientId',
+      clientSecret: 'clientSecret',
+      stateText: 'stateText'
+    })
+
+    expect(authorization.accessToken).toBe('accessToken')
+    expect(authorization.clientId).toBe('clientId')
+    expect(authorization.clientSecret).toBe('clientSecret')
+    expect(authorization.stateText).toBe('stateText')
+    expect(authorization.tokenType).toBe('Bearer')
+  })
+
+  it('default', (): void => {
+    const authorization = new Authorization({})
+
+    expect(authorization.accessToken).toBe('')
+    expect(authorization.clientId).toBe('')
+    expect(authorization.clientSecret).toBe('')
+    expect(authorization.stateText.length).toBeGreaterThan(0)
+    expect(authorization.tokenType).toBe('Bearer')
   })
 })
 
