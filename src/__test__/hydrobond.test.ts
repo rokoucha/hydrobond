@@ -1,22 +1,36 @@
-import Hydrobond, { File, PostBody, UserSettings } from '../hydrobond'
+import Hydrobond, {
+  File,
+  PostBody,
+  UserSettings,
+  Application
+} from '../hydrobond'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 const mock = new MockAdapter(axios)
 
-const hydrobond = new Hydrobond(
-  new URL('https://example.com/api'),
-  new URL('https://example.com/oauth'),
-  {
-    accessToken: 'access_token',
-    clientId: 'client_id',
-    clientSecret: 'client_secret',
-    stateText: 'state',
-    tokenType: 'Bearer'
-  }
-)
+describe('Application', (): void => {
+  it('valid instance', (): void => {
+    const application = new Application({ id: 1, name: 'name' })
+
+    expect(application.id).toBe(1)
+    expect(application.name).toBe('name')
+  })
+})
 
 describe('Hydrobond', (): void => {
+  const hydrobond = new Hydrobond(
+    new URL('https://example.com/api'),
+    new URL('https://example.com/oauth'),
+    {
+      accessToken: 'access_token',
+      clientId: 'client_id',
+      clientSecret: 'client_secret',
+      stateText: 'state',
+      tokenType: 'Bearer'
+    }
+  )
+
   describe('getAuthorizeUrl', (): void => {
     it('throw error because of clientId is empty', (): void => {
       const hydrobond = new Hydrobond(
