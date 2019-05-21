@@ -28,7 +28,7 @@ steps:
     displayName: 'Check with ESLint'
 
   - script: |
-      yarn test
+      yarn test:ci
     displayName: 'Check with tests'
 
   - task: PublishTestResults@2
