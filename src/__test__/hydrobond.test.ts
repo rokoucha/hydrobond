@@ -1,4 +1,4 @@
-import Hydrobond, { PostBody, UserSettings } from '../hydrobond'
+import Hydrobond, { File, PostBody, UserSettings } from '../hydrobond'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -310,6 +310,8 @@ describe('Hydrobond', (): void => {
       const res = await hydrobond.updateAccount(userSettings)
 
       expect(res.name).toBe('New name')
+      expect(res.avatarFile).toBeInstanceOf(File)
+      if (res.avatarFile instanceof File) expect(res.avatarFile.id).toBe(1)
     })
 
     it('success update only name', async (): Promise<void> => {
@@ -335,6 +337,7 @@ describe('Hydrobond', (): void => {
       const res = await hydrobond.updateAccount(userSettings)
 
       expect(res.name).toBe('New name')
+      expect(res.avatarFile).toBeNull()
     })
 
     it('success update only avatar', async (): Promise<void> => {
@@ -374,6 +377,8 @@ describe('Hydrobond', (): void => {
       const res = await hydrobond.updateAccount(userSettings)
 
       expect(res.name).toBe('Old name')
+      expect(res.avatarFile).toBeInstanceOf(File)
+      if (res.avatarFile instanceof File) expect(res.avatarFile.id).toBe(1)
     })
 
     it('do not update anything', async (): Promise<void> => {
@@ -393,6 +398,7 @@ describe('Hydrobond', (): void => {
       const res = await hydrobond.updateAccount(userSettings)
 
       expect(res.name).toBe('Old name')
+      expect(res.avatarFile).toBeNull()
     })
   })
 })
