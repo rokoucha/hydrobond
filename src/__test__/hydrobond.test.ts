@@ -17,6 +17,35 @@ const hydrobond = new Hydrobond(
 )
 
 describe('Hydrobond', (): void => {
+  describe('getAuthorizeUrl', (): void => {
+    it('throw error because of clientId is empty', (): void => {
+      const hydrobond = new Hydrobond(
+        new URL('https://example.com/api'),
+        new URL('https://example.com/oauth'),
+        {
+          accessToken: 'access_token',
+          clientSecret: 'client_secret',
+          stateText: 'state',
+          tokenType: 'Bearer'
+        }
+      )
+      expect(
+        (): void => {
+          hydrobond.getAuthorizeUrl()
+        }
+      ).toThrowError(new Error('clientId is empty'))
+    })
+
+    it('success make authorize url', (): void => {
+      const url = hydrobond.getAuthorizeUrl()
+
+      expect(url).toBeInstanceOf(URL)
+      expect(url.href).toBe(
+        'https://example.com/oauth/authorize?client_id=client_id&response_type=code&state=state'
+      )
+    })
+  })
+
   describe('authorize', (): void => {
     it('throw error because of clientId is not set', async (): Promise<
       void

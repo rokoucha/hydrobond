@@ -480,10 +480,9 @@ export default class Hydrobond {
     if (this.auth.clientId === '') throw Error('clientId is empty')
 
     return new URL(
-      `/authorize?client_id=${this.auth.clientId}&response_type=code&state=${
-        this.auth.stateText
-      }`,
-      this.oauthEndpoint.origin
+      `${this.oauthEndpoint.href}/authorize?client_id=${
+        this.auth.clientId
+      }&response_type=code&state=${this.auth.stateText}`
     )
   }
 
