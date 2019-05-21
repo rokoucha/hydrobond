@@ -1,0 +1,13 @@
+/node_modules
+/src
+/test
+.editorconfig
+.eslintignore
+.eslintrc
+.gitignore
+.prettierignore
+.prettierrc
+azure-pipelines.yml
+jest.config.json
+tsconfig.json
+tslint.json
