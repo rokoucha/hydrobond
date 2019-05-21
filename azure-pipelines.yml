@@ -41,4 +41,4 @@ steps:
       codeCoverageTool: 'cobertura'
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/coverage'
-      displayName: 'Publish coverage results'
+    displayName: 'Publish coverage results'
