@@ -44,7 +44,9 @@ export class Application {
    *
    * @param {Partial<Application>} application object
    */
-  private validate(application: Partial<Application>) {
+  private validate(
+    application: Partial<Application>
+  ): { id: number; name: string } {
     return $.obj({
       id: $.num,
       name: $.str
@@ -79,7 +81,15 @@ export class Authorization {
    *
    * @param {Partial<Authorization>} authorization object
    */
-  private validate(authorization: Partial<Authorization>) {
+  private validate(
+    authorization: Partial<Authorization>
+  ): {
+    accessToken: string | undefined
+    clientId: string | undefined
+    clientSecret: string | undefined
+    stateText: string | undefined
+    tokenType: string | undefined
+  } {
     return $.obj({
       accessToken: $.optional.str,
       clientId: $.optional.str,
@@ -90,7 +100,7 @@ export class Authorization {
   }
 
   /**
-   * Make state parameter fot authorize
+   * Make state parameter for authorize
    * https://tools.ietf.org/html/draft-ietf-oauth-v2-31#section-10.12
    *
    * @returns {string}
@@ -136,7 +146,21 @@ export class File {
    *
    * @param {Partial<File>} file object
    */
-  private validate(file: Partial<File>) {
+  private validate(
+    file: Partial<File>
+  ): {
+    id: number
+    name: string
+    variants: {
+      id: number
+      score: number
+      extension: string
+      type: string
+      size: number
+      url: string
+      mime: string
+    }[]
+  } {
     return $.obj({
       id: $.num,
       name: $.str,
@@ -164,66 +188,29 @@ export class File {
 
     this.id = file.id
     this.name = file.name
-    this.variants = file.variants.map(variant => {
-      return {
-        id: variant.id,
-        score: variant.score,
-        extension: variant.extension,
-        type: variant.type,
-        size: variant.size,
-        url: new URL(variant.url),
-        mime: variant.mime
+    this.variants = file.variants.map(
+      (
+        variant
+      ): {
+        id: number
+        score: number
+        extension: string
+        type: string
+        size: number
+        url: URL
+        mime: string
+      } => {
+        return {
+          id: variant.id,
+          score: variant.score,
+          extension: variant.extension,
+          type: variant.type,
+          size: variant.size,
+          url: new URL(variant.url),
+          mime: variant.mime
+        }
       }
-    })
-  }
-}
-
-/**
- * Post
- */
-export class Post {
-  public application: Application
-  public createdAt: Date
-  public id: number
-  public text: string
-  public updatedAt: Date
-  public user: User
-  public files: File[]
-
-  /**
-   * Validate
-   *
-   * @param {Partial<Post>} post object
-   */
-  private validate(post: Partial<Post>) {
-    return $.obj({
-      application: $.any,
-      createdAt: Validator.isValidDate,
-      id: $.num,
-      text: $.str.max(512),
-      updatedAt: Validator.isValidDate,
-      user: $.any,
-      files: $.arr($.any)
-    }).throw(post)
-  }
-
-  /**
-   * Constructor
-   *
-   * @param {Partial<Post>} p object
-   */
-  public constructor(p: Partial<Post>) {
-    const post = this.validate(p)
-
-    this.application = new Application(post.application)
-    this.createdAt = new Date(post.createdAt)
-    this.id = post.id
-    this.text = post.text
-    this.updatedAt = new Date(post.updatedAt)
-    this.user = new User(post.user)
-    this.files = []
-
-    this.files = post.files.map(file => new File(file))
+    )
   }
 }
 
@@ -239,7 +226,9 @@ export class PostBody {
    *
    * @param {Partial<PostBody>} postBody object
    */
-  private validate(postBody: Partial<PostBody>) {
+  private validate(
+    postBody: Partial<PostBody>
+  ): { text: string; fileIds: number[] | undefined } {
     return $.obj({
       text: $.str.max(512),
       fileIds: $.optional.array($.num)
@@ -271,10 +260,14 @@ export class Token {
    *
    * @param {Partial<Token>} token object
    */
-  private validate(token: Partial<Token>) {
+  private validate(
+    token: Partial<Token>
+  ): { access_token: string; token_type: string } {
     return $.obj({
+      /* eslint-disable @typescript-eslint/camelcase */
       access_token: $.str,
       token_type: $.str
+      /* eslint-enable @typescript-eslint/camelcase */
     }).throw(token)
   }
 
@@ -308,7 +301,17 @@ export class User {
    *
    * @param {Partial<User>} account object
    */
-  private validate(account: Partial<User>) {
+  private validate(
+    account: Partial<User>
+  ): {
+    avatarFile: Partial<File>
+    createdAt: string
+    id: number
+    name: string
+    postsCount: number
+    screenName: string
+    updatedAt: string
+  } {
     return $.obj({
       avatarFile: $.nullable.any,
       createdAt: Validator.isValidDate,
@@ -339,6 +342,65 @@ export class User {
 }
 
 /**
+ * Post
+ */
+export class Post {
+  public application: Application
+  public createdAt: Date
+  public id: number
+  public text: string
+  public updatedAt: Date
+  public user: User
+  public files: File[]
+
+  /**
+   * Validate
+   *
+   * @param {Partial<Post>} post object
+   */
+  private validate(
+    post: Partial<Post>
+  ): {
+    application: Partial<Application>
+    createdAt: string
+    id: number
+    text: string
+    updatedAt: string
+    user: Partial<User>
+    files: Partial<File>[]
+  } {
+    return $.obj({
+      application: $.any,
+      createdAt: Validator.isValidDate,
+      id: $.num,
+      text: $.str.max(512),
+      updatedAt: Validator.isValidDate,
+      user: $.any,
+      files: $.arr($.any)
+    }).throw(post)
+  }
+
+  /**
+   * Constructor
+   *
+   * @param {Partial<Post>} p object
+   */
+  public constructor(p: Partial<Post>) {
+    const post = this.validate(p)
+
+    this.application = new Application(post.application)
+    this.createdAt = new Date(post.createdAt)
+    this.id = post.id
+    this.text = post.text
+    this.updatedAt = new Date(post.updatedAt)
+    this.user = new User(post.user)
+    this.files = []
+
+    this.files = post.files.map((file): File => new File(file))
+  }
+}
+
+/**
  * User settings
  */
 export class UserSettings {
@@ -350,7 +412,9 @@ export class UserSettings {
    *
    * @param {Partial<UserSettings>} userSettings object
    */
-  private validate(userSettings: Partial<UserSettings>) {
+  private validate(
+    userSettings: Partial<UserSettings>
+  ): { avatarFileId: number | undefined; name: string | undefined } {
     return $.obj({
       avatarFileId: $.optional.num,
       name: $.optional.str.range(1, 20)
@@ -441,11 +505,13 @@ export default class Hydrobond {
       }`,
       baseURL: this.oauthEndpoint.href,
       data: {
+        /* eslint-disable @typescript-eslint/camelcase */
         client_id: this.auth.clientId,
         client_secret: this.auth.clientSecret,
         code: authCode,
         grant_type: 'authorization_code',
         state: this.auth.stateText
+        /* eslint-enable @typescript-eslint/camelcase */
       }
     })
 
@@ -499,7 +565,7 @@ export default class Hydrobond {
       }
     })
 
-    return res.data.map((post: Post) => new Post(post))
+    return res.data.map((post: Partial<Post>): Post => new Post(post))
   }
 
   /**
@@ -565,7 +631,7 @@ export default class Hydrobond {
      * @param {number} code close code
      * @param {string} reason reason
      */
-    const close = (code: number, reason: string) => {
+    const close = (code: number, reason: string): void => {
       eventEmitter.emit('close', { code, reason })
     }
 
@@ -574,7 +640,7 @@ export default class Hydrobond {
      *
      * @param {Error} error error
      */
-    const error = (error: Error) => {
+    const error = (error: Error): void => {
       throw error
     }
 
@@ -583,7 +649,7 @@ export default class Hydrobond {
      *
      * @param {string} data messsage
      */
-    const message = (data: string) => {
+    const message = (data: string): void => {
       try {
         const message = JSON.parse(data)
 
@@ -613,7 +679,7 @@ export default class Hydrobond {
     /**
      * Open
      */
-    const open = () => {
+    const open = (): void => {
       ws.send(
         JSON.stringify({
           type: 'connect',
@@ -634,9 +700,12 @@ export default class Hydrobond {
      * @param {number} code close code
      * @param {string} reason reason
      */
-    eventEmitter.addListener('disconnect', (code?: number, reason?: string) => {
-      ws.close(code, reason)
-    })
+    eventEmitter.addListener(
+      'disconnect',
+      (code?: number, reason?: string): void => {
+        ws.close(code, reason)
+      }
+    )
 
     return eventEmitter
   }
