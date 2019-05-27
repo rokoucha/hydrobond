@@ -2,8 +2,11 @@
   "author": "Atnanasi <ys2000pro@gmail.com>",
   "description": "Useful Sea wrapper for JavaScript, written in TypeScript",
   "files": [
-    "dist",
-    "!**/__test__/**"
+    "dist/*",
+    "!**/__test__/**",
+    "LICENSE",
+    "package.json",
+    "README.md"
   ],
   "license": "Apache-2.0",
   "main": "dist/hydrobond.js",
