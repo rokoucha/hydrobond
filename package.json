@@ -21,7 +21,7 @@
     "tsc": "tsc"
   },
   "types": "dist/hydrobond.d.ts",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/form-data": "^2.2.1",
