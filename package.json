@@ -19,7 +19,7 @@
     "lint": "eslint src/** --ext .ts",
     "prettier:format": "prettier --write \"./src/**/*.ts\"",
     "prettier": "prettier --check \"./src/**/*.ts\"",
-    "test:ci": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --coverageReporters=html",
+    "test:ci": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
     "test": "jest --reporters=default",
     "tsc": "tsc"
   },
