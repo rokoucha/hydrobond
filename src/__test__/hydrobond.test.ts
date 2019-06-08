@@ -70,11 +70,9 @@ describe('Hydrobond', (): void => {
           tokenType: 'Bearer'
         }
       )
-      expect(
-        (): void => {
-          hydrobond.getAuthorizeUrl()
-        }
-      ).toThrowError(new Error('clientId is empty'))
+      expect((): void => {
+        hydrobond.getAuthorizeUrl()
+      }).toThrowError(new Error('clientId is empty'))
     })
 
     it('success make authorize url', (): void => {

@@ -20,16 +20,14 @@ class Validator {
   /**
    * Validate url string
    */
-  public static isValidUrl = $.str.pipe(
-    (str: string): boolean => {
-      try {
-        new URL(str)
-        return true
-      } catch (error) {
-        return false
-      }
+  public static isValidUrl = $.str.pipe((str: string): boolean => {
+    try {
+      new URL(str)
+      return true
+    } catch (error) {
+      return false
     }
-  )
+  })
 }
 
 /**
@@ -185,29 +183,25 @@ export class File {
 
     this.id = file.id
     this.name = file.name
-    this.variants = file.variants.map(
-      (
-        variant
-      ): {
-        id: number
-        score: number
-        extension: string
-        type: string
-        size: number
-        url: URL
-        mime: string
-      } => {
-        return {
-          id: variant.id,
-          score: variant.score,
-          extension: variant.extension,
-          type: variant.type,
-          size: variant.size,
-          url: new URL(variant.url),
-          mime: variant.mime
-        }
+    this.variants = file.variants.map((variant): {
+      id: number
+      score: number
+      extension: string
+      type: string
+      size: number
+      url: URL
+      mime: string
+    } => {
+      return {
+        id: variant.id,
+        score: variant.score,
+        extension: variant.extension,
+        type: variant.type,
+        size: variant.size,
+        url: new URL(variant.url),
+        mime: variant.mime
       }
-    )
+    })
   }
 }
 
@@ -462,9 +456,9 @@ export default class Hydrobond {
     })
 
     if (this.auth.accessToken !== '') {
-      this.axios.defaults.headers.common['Authorization'] = `${
-        this.auth.tokenType
-      } ${this.auth.accessToken}`
+      this.axios.defaults.headers.common[
+        'Authorization'
+      ] = `${this.auth.tokenType} ${this.auth.accessToken}`
     }
   }
 
@@ -477,9 +471,7 @@ export default class Hydrobond {
     if (this.auth.clientId === '') throw Error('clientId is empty')
 
     return new URL(
-      `${this.oauthEndpoint.href}/authorize?client_id=${
-        this.auth.clientId
-      }&response_type=code&state=${this.auth.stateText}`
+      `${this.oauthEndpoint.href}/authorize?client_id=${this.auth.clientId}&response_type=code&state=${this.auth.stateText}`
     )
   }
 
@@ -496,9 +488,7 @@ export default class Hydrobond {
 
     const res = await this.axios({
       method: 'post',
-      url: `/token?client_id=${this.auth.clientId}&response_type=code&state=${
-        this.auth.stateText
-      }`,
+      url: `/token?client_id=${this.auth.clientId}&response_type=code&state=${this.auth.stateText}`,
       baseURL: this.oauthEndpoint.href,
       data: {
         /* eslint-disable @typescript-eslint/camelcase */
@@ -514,9 +504,9 @@ export default class Hydrobond {
     const token = new Token(res.data)
 
     this.auth.accessToken = token.accessToken
-    this.axios.defaults.headers.common['Authorization'] = `${
-      this.auth.tokenType
-    } ${this.auth.accessToken}`
+    this.axios.defaults.headers.common[
+      'Authorization'
+    ] = `${this.auth.tokenType} ${this.auth.accessToken}`
 
     return this.auth.accessToken
   }
